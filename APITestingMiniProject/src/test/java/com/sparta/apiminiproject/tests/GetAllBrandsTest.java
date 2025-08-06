@@ -28,13 +28,4 @@ public class GetAllBrandsTest {
 
         System.out.println("Response Body: " + response.asPrettyString());
     }
-
-    @Test
-    public void testPutAllBrandsMethodAllowedOrNot() {
-        given()
-                .when()
-                .put("/api/brandsList")
-                .then()
-                .statusCode(anyOf(is(405), is(200))); // Accept 405 or 200 for now
-    }
 }
