@@ -1,18 +1,9 @@
-package com.sparta.apiminiproject.tests;
+package com.sparta.apiminiproject.pojos;
 
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.restassured.RestAssured;
-import io.restassured.response.Response;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
 
 import java.util.List;
-
-import static io.restassured.RestAssured.*;
-import static org.hamcrest.Matchers.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 // POJO Classes
 class Brand {
