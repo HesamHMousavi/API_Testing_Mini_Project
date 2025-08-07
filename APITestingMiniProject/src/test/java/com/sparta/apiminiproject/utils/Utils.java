@@ -1,5 +1,6 @@
 package com.sparta.apiminiproject.utils;
 
+
 import com.sparta.apiminiproject.pojos.UserAccount;
 import io.restassured.RestAssured;
 import io.restassured.builder.RequestSpecBuilder;
@@ -13,9 +14,15 @@ public class Utils {
     private static final String ALL_PRODUCTS_LIST_PATH = Config.getAllProductsPath();
     private static final String CREATE_USER_ACCOUNT_PATH = Config.getCreateUserAccountPath();
     private static final String DELETE_USER_ACCOUNT_PATH = Config.getDeleteUserAccountPath();
-
+    private static final String Get_User_Account_Detail_Path = "/api/getUserDetailByEmail";
     public String getBaseUri() {
         return  BASE_URI;
+    }
+
+    public static RequestSpecification getUserDetailByEmailSpec() {
+        return getBaseSpecBuilder(Get_User_Account_Detail_Path)
+                .addParam("email","test@gmail.com")
+                .build();
     }
 
     public static RequestSpecification allProductsRequestSpec() {
@@ -70,3 +77,5 @@ public class Utils {
                 .delete();
     }
 }
+
+
