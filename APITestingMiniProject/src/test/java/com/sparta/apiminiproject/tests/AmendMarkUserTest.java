@@ -1,8 +1,8 @@
 package com.sparta.apiminiproject.tests;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sparta.apiminiproject.pojos.User;
-import com.sparta.apiminiproject.pojos.UserResponse;
+import com.sparta.apiminiproject.pojos.MarkUser;
+import com.sparta.apiminiproject.pojos.MarkUserResponse;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import org.apache.commons.logging.Log;
@@ -11,8 +11,6 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.HashMap;
@@ -20,13 +18,13 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class AmendUserTest {
-    private static final Log log = LogFactory.getLog(RegisterUserTest.class);
+public class AmendMarkUserTest {
+    private static final Log log = LogFactory.getLog(RegisterMarkUserTest.class);
     private final String email = "mark.blackmore@example.com";
     private final String password = "securePassword123";
     private Response registerResponse;
-    private UserResponse userResponse;
-    private User user;
+    private MarkUserResponse markUserResponse;
+    private MarkUser user;
 
     @BeforeEach
     public void setUp() {
@@ -48,8 +46,8 @@ public class AmendUserTest {
         String json = getUserResponse.asString();
         ObjectMapper mapper = new ObjectMapper();
         try {
-            userResponse = mapper.readValue(json, UserResponse.class);
-            user = userResponse.getUser();
+            markUserResponse = mapper.readValue(json, MarkUserResponse.class);
+            user = markUserResponse.getUser();
         } catch(Exception e) {
             System.out.println("USER NOT INSTANTIATED");
             e.printStackTrace();
@@ -140,7 +138,7 @@ public class AmendUserTest {
         fname = "marl";
         county = "place";
 
-        User updatedFieldsUser = new User(country, address2, city,
+        MarkUser updatedFieldsUser = new MarkUser(country, address2, city,
                 birthMonth, address1, lname, title, birthYear, birthDay, zipcode, name, company, id, state, fname);
         //sets new user instance to having the same email as user for identification
         updatedFieldsUser.setEmail(user.getEmail());

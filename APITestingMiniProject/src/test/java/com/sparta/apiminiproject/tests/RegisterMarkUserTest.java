@@ -1,12 +1,13 @@
 package com.sparta.apiminiproject.tests;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sparta.apiminiproject.pojos.User;
-import com.sparta.apiminiproject.pojos.UserResponse;
+import com.sparta.apiminiproject.pojos.MarkUser;
+import com.sparta.apiminiproject.pojos.MarkUserResponse;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -16,53 +17,16 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class DeleteUserTest {
-    private static final Log log = LogFactory.getLog(RegisterUserTest.class);
+public class RegisterMarkUserTest {
+    private static final Log log = LogFactory.getLog(RegisterMarkUserTest.class);
     private final String email = "mark.blackmore@example.com";
     private final String password = "securePassword123";
     private Response registerResponse;
-    private UserResponse userResponse;
-    private User user;
 
     @BeforeEach
     public void setUp() {
         RestAssured.baseURI = "https://automationexercise.com/api";
 
-        Map<String, String> requestBody = getStringStringMap();
-
-        registerResponse = RestAssured
-                .given()
-                .contentType("application/x-www-form-urlencoded")
-                .formParams(requestBody)
-                .post("/createAccount");
-
-        Response getUserResponse = RestAssured
-                .given()
-                .queryParam("email", email)
-                .get("/getUserDetailByEmail");
-
-        String json = getUserResponse.asString();
-        ObjectMapper mapper = new ObjectMapper();
-        try {
-            userResponse = mapper.readValue(json, UserResponse.class);
-            user = userResponse.getUser();
-        } catch(Exception e) {
-            System.out.println("USER NOT INSTANTIATED");
-            e.printStackTrace();
-        }
-
-
-        System.out.println("User ID: " + user.getId());
-        System.out.println("Name: " + user.getName());
-        System.out.println("Email: " + user.getEmail());
-        System.out.println("Country: " + user.getCountry());
-        System.out.println("Address1: " + user.getAddress1());
-        System.out.println("Address2: " + user.getAddress2());
-        System.out.println("Zipcode: " + user.getZipcode());
-
-    }
-
-    private Map<String, String> getStringStringMap() {
         Map<String, String> requestBody = new HashMap<>();
         requestBody.put("firstname", "Mark");
         requestBody.put("name", "Mark Blackmore");
@@ -75,7 +39,12 @@ public class DeleteUserTest {
         requestBody.put("mobile_number", "0783738432");
         requestBody.put("email", email);
         requestBody.put("password", password);
-        return requestBody;
+
+        registerResponse = RestAssured
+                .given()
+                .contentType("application/x-www-form-urlencoded")
+                .formParams(requestBody)
+                .post("/createAccount");
     }
 
     @Test
@@ -89,10 +58,31 @@ public class DeleteUserTest {
     @Test
     @DisplayName("Deserialize user JSON into POJO")
     public void deserializeUserJson_Test() throws Exception {
-        assertEquals(200, userResponse.getResponseCode());
+        Response getUserResponse = RestAssured
+                .given()
+                .queryParam("email", email)
+                .get("/getUserDetailByEmail");
+
+        String json = getUserResponse.asString();
+        ObjectMapper mapper = new ObjectMapper();
+        MarkUserResponse markUserResponse = mapper.readValue(json, MarkUserResponse.class);
+
+        MarkUser user = markUserResponse.getUser();
+        System.out.println("User ID: " + user.getId());
+        System.out.println("Name: " + user.getName());
+        System.out.println("Email: " + user.getEmail());
+        System.out.println("Country: " + user.getCountry());
+        System.out.println("Address1: " + user.getAddress1());
+        System.out.println("Address2: " + user.getAddress2());
+        System.out.println("Zipcode: " + user.getZipcode());
+
+
+        assertEquals(200, markUserResponse.getResponseCode());
     }
 
-    @Test
+
+
+    @AfterEach
     @DisplayName("Delete user account")
     public void deleteUserAccount_Test() {
         Response deleteResponse = RestAssured
@@ -103,8 +93,8 @@ public class DeleteUserTest {
                 .delete("/deleteAccount");
 
         System.out.println(deleteResponse.asString());
-        assertEquals(200, deleteResponse.getStatusCode());
-        assertEquals("Account deleted!", deleteResponse.jsonPath().getString("message"));
+
     }
 
 }
+

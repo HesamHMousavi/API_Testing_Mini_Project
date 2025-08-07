@@ -2,15 +2,15 @@ package com.sparta.apiminiproject.pojos;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class UserResponse {
+public class MarkUserResponse {
 
 	@JsonProperty("user")
-	private User user;
+	private MarkUser user;
 
 	@JsonProperty("responseCode")
 	private int responseCode;
 
-	public User getUser(){
+	public MarkUser getUser(){
 		return user;
 	}
 

@@ -2,7 +2,7 @@ package com.sparta.apiminiproject.pojos;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class User {
+public class MarkUser {
 
 	@JsonProperty("country")
 	private String country;
@@ -52,13 +52,13 @@ public class User {
 	@JsonProperty("email")
 	private String email;
 
-	public User() {
+	public MarkUser() {
 		
 	}
 	// Constructor excluding email
-	public User(String country, String address2, String city, String birthMonth, String address1,
-				String lastName, String title, String birthYear, String birthDay, String zipcode,
-				String name, String company, int id, String state, String firstName) {
+	public MarkUser(String country, String address2, String city, String birthMonth, String address1,
+					String lastName, String title, String birthYear, String birthDay, String zipcode,
+					String name, String company, int id, String state, String firstName) {
 		this.country = country;
 		this.address2 = address2;
 		this.city = city;
