@@ -31,4 +31,12 @@ public class Config {
     public static String getAllProductsPath() {
         return properties.getProperty("all_products_list_path");
     }
+
+    public static String getCreateUserAccountPath() {
+        return properties.getProperty("create_user_account_path");
+    }
+
+    public static String getDeleteUserAccountPath() {
+        return properties.getProperty("delete_user_account_path");
+    }
 }
