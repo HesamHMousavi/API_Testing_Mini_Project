@@ -1,20 +1,20 @@
 package com.sparta.apiminiproject.tests;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sparta.apiminiproject.pojos.UserAccount;
 import com.sparta.apiminiproject.utils.Utils;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
 import org.jsoup.Jsoup;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 public class PostCreateUserAccountTests {
 
-    private static JSONObject createdUserAccountResponse;
+    private static JsonNode createdUserAccountResponse;
 
     @BeforeAll
     static void beforeAll() throws Exception {
@@ -54,17 +54,18 @@ public class PostCreateUserAccountTests {
 
         var createdUserAccountResponseString = Jsoup.parse(response.body().asString()).text();
 
-        var jsonParser = new JSONParser();
-        createdUserAccountResponse = (JSONObject)jsonParser.parse(createdUserAccountResponseString);
+        var mapper = new ObjectMapper();
+        createdUserAccountResponse = mapper.readTree(createdUserAccountResponseString);
     }
 
     @Test
     void postCreateUserAccount_ReturnsCorrectResponseCode() {
-        MatcherAssert.assertThat(createdUserAccountResponse.get("responseCode"), Matchers.is(201L));
+        MatcherAssert.assertThat(createdUserAccountResponse.get("responseCode").asLong(), Matchers.is(201L));
     }
 
     @Test
     void postCreateUserAccount_ReturnsCorrectMessage() {
-        MatcherAssert.assertThat(createdUserAccountResponse.get("message"), Matchers.is("User created!"));
+        MatcherAssert.assertThat(createdUserAccountResponse.get("message").asText(),
+                Matchers.is("User created!"));
     }
 }
