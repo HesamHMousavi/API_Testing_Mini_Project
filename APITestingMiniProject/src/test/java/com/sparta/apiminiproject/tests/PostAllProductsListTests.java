@@ -1,21 +1,21 @@
 package com.sparta.apiminiproject.tests;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sparta.apiminiproject.pojos.Category;
-import com.sparta.apiminiproject.pojos.ErrorResponse;
 import com.sparta.apiminiproject.pojos.ProductsItem;
 import com.sparta.apiminiproject.pojos.Usertype;
 import com.sparta.apiminiproject.utils.Utils;
 import io.restassured.RestAssured;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import org.jsoup.Jsoup;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 public class PostAllProductsListTests {
 
-    private static ErrorResponse errorResponse;
+    private static JSONObject errorResponse;
 
     @BeforeAll
     static void beforeAll() throws Exception {
@@ -46,18 +46,18 @@ public class PostAllProductsListTests {
 
         var errorResponseString = Jsoup.parse(response.body().asString()).text();
 
-        var mapper = new ObjectMapper();
-        errorResponse = mapper.readValue(errorResponseString, ErrorResponse.class);
+        var jsonParser = new JSONParser();
+        errorResponse = (JSONObject)jsonParser.parse(errorResponseString);
     }
 
     @Test
     void postAllProductsList_Returns405ResponseCode() {
-        MatcherAssert.assertThat(errorResponse.getResponseCode(), Matchers.is(405));
+        MatcherAssert.assertThat(errorResponse.get("responseCode"), Matchers.is(405L));
     }
 
     @Test
     void postAllProductsList_ReturnsCorrectErrorMessage() {
-        MatcherAssert.assertThat(errorResponse.getMessage(),
+        MatcherAssert.assertThat(errorResponse.get("message"),
                 Matchers.is("This request method is not supported."));
     }
 }
